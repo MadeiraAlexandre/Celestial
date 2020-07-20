@@ -1,0 +1,283 @@
+﻿<Page
+    x:Class="Celestial.Views.GalleryView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Celestial.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Celestial.Model"
+    Background="{ThemeResource RegionBrush}"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+
+        <MenuFlyout x:Key="PictureFlyout">
+            <MenuFlyoutItem
+                Click="PictureFlyoutDownloadItem_Click"
+                Icon="Download"
+                Text="Download">
+                <MenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="S" Modifiers="Control" />
+                </MenuFlyoutItem.KeyboardAccelerators>
+            </MenuFlyoutItem>
+            <MenuFlyoutSubItem Text="Set as">
+                <MenuFlyoutItem Click="PictureFlyoutWallpaperItem_Click" Text="Set as wallpaper" />
+                <MenuFlyoutItem Click="PictureFlyoutLockScreenItem_Click" Text="Set as lockscreen" />
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem
+                Click="PictureFlyoutShareItem_Click"
+                Icon="Share"
+                Text="Share" />
+        </MenuFlyout>
+
+        <MenuFlyout x:Key="GalleryGridViewFlyout">
+            <MenuFlyoutItem
+                Click="GalleryGridViewFlyoutDownload_Click"
+                Icon="Download"
+                Text="Download" />
+        </MenuFlyout>
+
+    </Page.Resources>
+
+
+    <Grid>
+
+
+        <Grid x:Name="GalleryGrid">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid
+                Grid.Row="0"
+                Padding="0,0,0,10"
+                VerticalAlignment="Top">
+                <TextBlock
+                    Padding="20,0,0,0"
+                    FontSize="28"
+                    FontWeight="Bold"
+                    Text="Explore" />
+                <Button
+                    Margin="5,0,10,0"
+                    HorizontalAlignment="Right"
+                    AccessKey="S"
+                    AutomationProperties.Name="Settings"
+                    Click="GalleryGridViewSettingsButton_Click"
+                    Style="{ThemeResource ButtonRevealStyle}"
+                    ToolTipService.ToolTip="Settings">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Setting" />
+                    </Button.Content>
+                </Button>
+            </Grid>
+
+            <GridView
+                x:Name="GalleryGridView"
+                Grid.Row="1"
+                Padding="10,20,10,20"
+                HorizontalAlignment="Center"
+                CacheMode="BitmapCache"
+                IsItemClickEnabled="True"
+                ItemClick="GalleryGridView_ItemClick"
+                Loaded="GalleryGridView_Loaded">
+                <GridView.ItemTemplate>
+                    <DataTemplate x:DataType="model:APOD">
+                        <Grid
+                            Width="250"
+                            Height="250"
+                            Margin="2"
+                            AutomationProperties.AccessibilityView="Raw"
+                            AutomationProperties.Name="{x:Bind Title}"
+                            ContextFlyout="{StaticResource GalleryGridViewFlyout}"
+                            CornerRadius="4"
+                            DataContext="{x:Bind}">
+                            <Image
+                                x:Name="GalleryGridViewImage"
+                                PointerEntered="Image_PointerEntered"
+                                PointerExited="Image_PointerExited"
+                                Stretch="UniformToFill">
+                                <Image.Source>
+                                    <BitmapImage UriSource="{x:Bind Url}" />
+                                </Image.Source>
+                            </Image>
+                            <Grid
+                                Width="250"
+                                Height="60"
+                                VerticalAlignment="Bottom"
+                                Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                                ToolTipService.ToolTip="{x:Bind Title}">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    Text="{x:Bind Title}"
+                                    TextWrapping="Wrap" />
+                            </Grid>
+                        </Grid>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+
+        </Grid>
+
+        <Grid
+            x:Name="FullScreenGrid"
+            x:Load="False"
+            Background="{ThemeResource RegionBrush}"
+            Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Grid.Column="0"
+                Margin="20,10,0,0"
+                VerticalAlignment="Top"
+                AccessKey="B"
+                Click="FullScreenGridBackButton_Click"
+                Style="{ThemeResource NavigationBackButtonNormalStyle}"
+                ToolTipService.ToolTip="Back">
+                <Button.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="Escape" />
+                </Button.KeyboardAccelerators>
+            </Button>
+            <Grid
+                x:Name="InfoPanel"
+                Grid.Column="0"
+                Width="400"
+                Opacity="0">
+                <StackPanel
+                    Margin="10,0,0,0"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                    <TextBlock
+                        x:Name="TitleTextBlock"
+                        Margin="20,20,20,0"
+                        HorizontalAlignment="Center"
+                        FontSize="16"
+                        FontWeight="Bold"
+                        IsTextSelectionEnabled="True"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        x:Name="CopyrightTextBlock"
+                        Margin="20,10,20,0"
+                        HorizontalAlignment="Center"
+                        FontWeight="SemiLight"
+                        IsTextSelectionEnabled="True"
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        x:Name="ExplanationTextBlock"
+                        Margin="20,10,20,0"
+                        IsTextSelectionEnabled="True"
+                        TextWrapping="Wrap" />
+                    <StackPanel
+                        Margin="0,20,0,0"
+                        HorizontalAlignment="Center"
+                        Orientation="Horizontal">
+                        <Button
+                            AccessKey="W"
+                            Click="PictureFlyoutWallpaperItem_Click"
+                            Content="Set as wallpaper"
+                            Style="{ThemeResource ButtonRevealStyle}" />
+                        <Button
+                            Margin="5,0,5,0"
+                            AccessKey="D"
+                            AutomationProperties.Name="Download"
+                            Click="PictureFlyoutDownloadItem_Click"
+                            Style="{ThemeResource ButtonRevealStyle}"
+                            ToolTipService.ToolTip="Download">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Download" />
+                            </Button.Content>
+                        </Button>
+                        <Button
+                            AccessKey="A"
+                            AutomationProperties.Name="Share"
+                            Click="PictureFlyoutShareItem_Click"
+                            Style="{ThemeResource ButtonRevealStyle}"
+                            ToolTipService.ToolTip="Share">
+                            <Button.Content>
+                                <SymbolIcon Symbol="Share" />
+                            </Button.Content>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </Grid>
+            <Image
+                x:Name="Picture"
+                Grid.Column="1"
+                Margin="10"
+                ContextFlyout="{StaticResource PictureFlyout}" />
+        </Grid>
+
+
+
+
+        <Grid
+            x:Name="SettingsGrid"
+            x:Load="False"
+            Background="{ThemeResource SystemControlAcrylicElementBrush}"
+            Visibility="Collapsed">
+            <Grid
+                Width="400"
+                Height="280"
+                Background="{ThemeResource RegionBrush}"
+                CornerRadius="8">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Button
+                    Grid.Row="0"
+                    Margin="20,10,10,20"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    AccessKey="C"
+                    AutomationProperties.Name="Close settings"
+                    Background="Transparent"
+                    Click="SettingsGridBackButton_Click"
+                    CornerRadius="2"
+                    Style="{ThemeResource ButtonRevealStyle}"
+                    ToolTipService.ToolTip="Close settings">
+                    <Button.Content>
+                        <SymbolIcon Symbol="Cancel" />
+                    </Button.Content>
+                </Button>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock
+                        Margin="20,20,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Text="Settings" />
+                </StackPanel>
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="20,10,10,0"
+                    Orientation="Vertical">
+                    <TextBlock
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        FontSize="22"
+                        FontWeight="Bold"
+                        Text="About" />
+                    <TextBlock
+                        Margin="0,10,10,0"
+                        IsTextSelectionEnabled="True"
+                        Text="This application is only possible thanks to NASA Open APIs."
+                        TextWrapping="Wrap" />
+                    <TextBlock
+                        Margin="0,5,0,0"
+                        IsTextSelectionEnabled="True"
+                        Text="Celestial is open source and available on GitHub under the MIT License."
+                        TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</Page>

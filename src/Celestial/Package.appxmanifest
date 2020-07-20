@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:uap5="http://schemas.microsoft.com/appx/manifest/uap/windows10/5"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="37048AlexandreM.CelestialAPOD"
+    Publisher="CN=C27F8FB4-8F79-4471-AD0F-BAABAFEF8801"
+    Version="1.0.45.0" />
+
+  <mp:PhoneIdentity PhoneProductId="fec08e78-fe5d-435c-897a-fc045552b6a1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>Celestial: See Our Universe</DisplayName>
+    <PublisherDisplayName>Alexandre Madeira</PublisherDisplayName>
+    <Logo>Assets\Titles\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="Celestial.App">
+      <uap:VisualElements
+        DisplayName="Celestial: See Our Universe"
+        Square150x150Logo="Assets\Titles\Square150x150Logo.png"
+        Square44x44Logo="Assets\Titles\Square44x44Logo.png"
+        Description="Celestial is your way to explore the cosmos, the app delivers a High Definition image of our universe, alongside with an explanation by a professional."
+        BackgroundColor="#2d2d30">
+        <uap:DefaultTile Wide310x150Logo="Assets\Titles\Wide310x150Logo.png" ShortName="Celestial" Square310x310Logo="Assets\Titles\LargeTile.png" Square71x71Logo="Assets\Titles\SmallTile.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile >
+        <uap:SplashScreen Image="Assets\Titles\SplashScreen.png" uap5:Optional="true"  BackgroundColor="#2d2d30"/>
+      </uap:VisualElements>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+  </Capabilities>
+</Package>
