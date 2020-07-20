@@ -3,6 +3,8 @@
 # Introduction
 Celestial is an APOD Client written in the UWP.
 
+![](https://raw.githubusercontent.com/MadeiraAlexandre/Celestial/master/screenshot/Device.png)
+
 The app uses the [NASA Open APIs](https://api.nasa.gov/) to deliver a high-quality picture of our universe, alongside with an explanation by a professional.
 
 # Getting Started
