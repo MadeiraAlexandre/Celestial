@@ -7,13 +7,10 @@
     xmlns:local="using:Celestial.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    Background="{ThemeResource SystemControlAcrylicWindowBrush}"
     mc:Ignorable="d">
 
-    <Grid
-        x:Name="WelcomeGrid"
-        Background="{ThemeResource RegionBrush}"
-        Loaded="WelcomeGrid_Loaded">
+    <ScrollViewer>
         <Grid
             Width="600"
             Height="700"
@@ -56,11 +53,12 @@
                 </StackPanel>
             </StackPanel>
             <winui:AnimatedVisualPlayer
-                Width="300" Loaded="AnimatedVisualPlayer_Loaded"
+                Width="300"
                 Height="300"
                 Margin="0,80,0,0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Center">
+                VerticalAlignment="Center"
+                Loaded="AnimatedVisualPlayer_Loaded">
                 <animation:Astronaut />
             </winui:AnimatedVisualPlayer>
             <Button
@@ -75,5 +73,5 @@
                 Style="{ThemeResource AccentButtonStyle}" />
         </Grid>
 
-    </Grid>
+    </ScrollViewer>
 </Page>

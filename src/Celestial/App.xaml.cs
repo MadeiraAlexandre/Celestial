@@ -4,6 +4,8 @@ using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
+using Windows.UI;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -39,13 +41,20 @@ namespace Celestial
                 CoreApplication.EnablePrelaunch(true);
                 if (rootFrame.Content == null)
                 {
-                    rootFrame.Navigate(typeof(MainPage), e.Arguments);
+                    if (!AppSettings.Instance.IsFirstLoad)
+                    {
+                        rootFrame.Navigate(typeof(Views.GalleryView), e.Arguments);
+                    }
+                    else
+                    {
+                        rootFrame.Navigate(typeof(Views.WelcomeView), e.Arguments);
+                    }
                 }
                 Window.Current.Activate();
+                CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
+                ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
+                ApplicationView.GetForCurrentView().TitleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
             }
-
-            TitleBarHelper.ExtendTitleBar();
-
         }
 
         private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)

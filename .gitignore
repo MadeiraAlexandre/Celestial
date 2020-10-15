@@ -1,0 +1,7 @@
+
+src/.vs/Celestial/v16/.suo
+/src/Celestial/bin/x64/Debug
+/src/Celestial/obj
+src/Celestial/Celestial.csproj.user
+src/Celestial/Services/Credential.cs
+/src/Celestial/bin/x64/Release

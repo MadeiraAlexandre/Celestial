@@ -1,30 +1,37 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Runtime.Serialization;
 
 namespace Celestial.Model
 {
-    [DataContract]
-    public class APOD
+    public class Apod
     {
         [DataMember]
+        [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
         [DataMember]
-        public string Copyright { get; set; }
-
-        [DataMember]
+        [JsonProperty(PropertyName = "explanation")]
         public string Explanation { get; set; }
 
         [DataMember]
+        [JsonProperty(PropertyName = "copyright")]
+        public string Copyright { get; set; }
+
+        [DataMember]
+        [JsonProperty(PropertyName = "media_type")]
         public string MediaType { get; set; }
 
         [DataMember]
+        [JsonProperty(PropertyName = "url")]
         public Uri Url { get; set; }
 
         [DataMember]
-        public Uri HDUrl { get; set; }
+        [JsonProperty(PropertyName = "hdurl")]
+        public Uri HdUrl { get; set; }
 
         [DataMember]
-        public DateTime Date { get; set; }
+        [JsonProperty(PropertyName = "date")]
+        public string Date { get; set; }
     }
 }
