@@ -24,8 +24,9 @@
     <AppxBundle>Always</AppxBundle>
     <AppxBundlePlatforms>x86|x64|arm|arm64</AppxBundlePlatforms>
     <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
-    <PackageCertificateThumbprint>C9DFF9C3C7172654E589893E082CCBB3F5BB30D2</PackageCertificateThumbprint>
-    <PackageCertificateKeyFile>Celestial_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateThumbprint>30967421F423034D3A8DACF406DC86C0D07F2E1A</PackageCertificateThumbprint>
+    <PackageCertificateKeyFile>
+    </PackageCertificateKeyFile>
     <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">

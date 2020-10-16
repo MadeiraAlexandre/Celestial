@@ -13,6 +13,7 @@ namespace Celestial.Views
     public sealed partial class ImageViewerPage : Page
     {
         private Apod _selectedItem;
+        private bool _isAnimationEnabled;
 
         public ImageViewerPage()
         {
@@ -37,18 +38,23 @@ namespace Celestial.Views
             {
                 imageAnimation.TryStart(Picture);
                 imageAnimation.Completed += ImageAnimation_Completed;
+                _isAnimationEnabled = true;
             }
             else
             {
                 ActionPanel.Opacity = 1;
                 DetailsColumn.Opacity = 1;
+                _isAnimationEnabled = false;
             }
         }
 
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", Picture);
+            if(_isAnimationEnabled == true)
+            {
+                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", Picture);
+            }
         }
 
         private void ImageAnimation_Completed(ConnectedAnimation sender, object args)

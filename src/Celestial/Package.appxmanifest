@@ -9,10 +9,10 @@
 
   <Identity
     Name="37048AlexandreM.CelestialAPOD"
-    Publisher="CN=Alexandre"
-    Version="1.0.45.0" />
+    Publisher="CN=C27F8FB4-8F79-4471-AD0F-BAABAFEF8801"
+    Version="1.0.46.0" />
 
-  <mp:PhoneIdentity PhoneProductId="fec08e78-fe5d-435c-897a-fc045552b6a1" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="5d837cdb-0e6e-4437-b154-be246451cc92" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Celestial: See Our Universe</DisplayName>
