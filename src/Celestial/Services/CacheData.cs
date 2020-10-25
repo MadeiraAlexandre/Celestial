@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Xaml.Controls;
@@ -23,6 +24,7 @@ namespace Celestial.Services
                 {
                     dataList.AddRange(await ReadCacheAsync().ConfigureAwait(false));
                 }
+                var apodList = dataList.Distinct(new ItemEqualityComparer());
                 JsonSerializer serializer = new JsonSerializer
                 {
                     Formatting = Formatting.Indented,
@@ -31,7 +33,7 @@ namespace Celestial.Services
                 using (StreamWriter sw = new StreamWriter(_file.Path))
                 using (JsonWriter writer = new JsonTextWriter(sw))
                 {
-                    serializer.Serialize(writer, dataList);
+                    serializer.Serialize(writer, apodList);
                 }
             }
             catch (Exception ex)

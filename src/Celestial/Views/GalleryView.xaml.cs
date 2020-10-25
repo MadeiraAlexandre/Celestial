@@ -1,9 +1,8 @@
 ﻿using Celestial.Helper;
 using Celestial.Model;
 using Celestial.Services;
+using Microsoft.Toolkit.Uwp;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Numerics;
 using Windows.UI.Composition;
 using Windows.UI.Xaml;
@@ -19,7 +18,8 @@ namespace Celestial.Views
         private readonly Compositor _compositor = Window.Current.Compositor;
         private SpringVector3NaturalMotionAnimation _springAnimation;
         private Apod _selectedItem;
-        private ObservableCollection<Apod> _observableList;
+        private Apod _searchItem;
+        private IncrementalLoadingCollection<ApodSource, Apod> collection;
 
         public GalleryView()
         {
@@ -72,10 +72,10 @@ namespace Celestial.Views
                     await GalleryGridView.TryStartConnectedAnimationAsync(animation, _selectedItem, "GalleryGridViewImage");
                 }
             }
-            if (_observableList == null)
+            if (collection == null)
             {
-                _observableList = new ObservableCollection<Apod>(await CacheData.ReadCacheAsync().ConfigureAwait(true));
-                GalleryGridView.ItemsSource = _observableList;
+                collection = new IncrementalLoadingCollection<ApodSource, Apod>();
+                GalleryGridView.ItemsSource = collection;
             }
         }
 
@@ -91,10 +91,7 @@ namespace Celestial.Views
             UnloadObject(SettingsGrid);
         }
 
-        private void CSPicker_Loaded(object sender, RoutedEventArgs e)
-        {
-            CSPicker.MaxDate = DateTimeOffset.UtcNow;
-        }
+        private void CSPicker_Loaded(object sender, RoutedEventArgs e) => CSPicker.MaxDate = DateTimeOffset.UtcNow;
 
         private async void GalleryGridViewFlyout_Download_Click(object sender, RoutedEventArgs e)
         {
@@ -104,12 +101,8 @@ namespace Celestial.Views
 
         private async void CSPicker_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
-            var data = await ApodClient.FetchApodAsync((DateTimeOffset)sender.Date).ConfigureAwait(true);
-            await CacheData.WriteCacheAsync(new List<Apod>
-            {
-                data
-            }).ConfigureAwait(true);
-            Frame.Navigate(typeof(ImageViewerPage), data);
+            _searchItem = await ApodClient.FetchApodAsync((DateTimeOffset)sender.Date).ConfigureAwait(true);
+            Frame.Navigate(typeof(ImageViewerPage), _searchItem);
         }
     }
 }

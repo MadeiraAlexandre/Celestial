@@ -31,12 +31,8 @@
                 Padding="10,80,10,20"
                 HorizontalAlignment="Center"
                 CacheMode="BitmapCache"
-                DataFetchSize="1"
-                IncrementalLoadingThreshold="5"
-                IncrementalLoadingTrigger="Edge"
                 IsItemClickEnabled="True"
                 ItemClick="GalleryGridView_ItemClick"
-                ItemsSource="{x:Bind _observableList}"
                 Loaded="GalleryGridView_Loaded"
                 SelectionMode="None">
                 <GridView.ItemTemplate>
@@ -111,6 +107,7 @@
                     VerticalAlignment="Bottom"
                     AccessKey="S"
                     AutomationProperties.Name="Settings"
+                    Background="Transparent"
                     Click="GalleryGridViewSettingsButton_Click"
                     Style="{ThemeResource ButtonRevealStyle}"
                     ToolTipService.ToolTip="Settings">

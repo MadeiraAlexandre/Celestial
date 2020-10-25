@@ -15,10 +15,7 @@ namespace Celestial.Views
         private Apod _selectedItem;
         private bool _isAnimationEnabled;
 
-        public ImageViewerPage()
-        {
-            InitializeComponent();
-        }
+        public ImageViewerPage() => InitializeComponent();
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
@@ -26,10 +23,7 @@ namespace Celestial.Views
             _selectedItem = (Apod)e.Parameter;
             var imageAnimation = ConnectedAnimationService.GetForCurrentView().GetAnimation("forwardAnimation");
             TitleTextBlock.Text = _selectedItem.Title;
-            if (string.IsNullOrEmpty(_selectedItem.Copyright))
-            {
-                _selectedItem.Copyright = "NASA";
-            }
+            if (string.IsNullOrEmpty(_selectedItem.Copyright)) _selectedItem.Copyright = "NASA";
             CopyrightTextBlock.Text = $"by {_selectedItem.Copyright}";
             ExplanationTextBlock.Text = _selectedItem.Explanation;
             Picture.Source = new BitmapImage(_selectedItem.Url);
@@ -51,10 +45,7 @@ namespace Celestial.Views
         protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
-            if(_isAnimationEnabled == true)
-            {
-                ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", Picture);
-            }
+            if (_isAnimationEnabled == true) ConnectedAnimationService.GetForCurrentView().PrepareToAnimate("backwardsAnimation", Picture);
         }
 
         private void ImageAnimation_Completed(ConnectedAnimation sender, object args)
@@ -67,10 +58,7 @@ namespace Celestial.Views
         {
             ActionPanel.Opacity = 0;
             DetailsColumn.Opacity = 0;
-            if (Frame.CanGoBack)
-            {
-                Frame.GoBack();
-            }
+            if (Frame.CanGoBack) Frame.GoBack();
         }
 
         private async void DownloadImageUI_Click(object sender, RoutedEventArgs e)

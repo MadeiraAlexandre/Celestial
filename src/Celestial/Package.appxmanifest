@@ -10,12 +10,12 @@
   <Identity
     Name="37048AlexandreM.CelestialAPOD"
     Publisher="CN=C27F8FB4-8F79-4471-AD0F-BAABAFEF8801"
-    Version="1.0.46.0" />
+    Version="1.0.56.0" />
 
-  <mp:PhoneIdentity PhoneProductId="5d837cdb-0e6e-4437-b154-be246451cc92" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="01b4e345-a0c9-40fc-8feb-b047a6cf0eec" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Celestial: See Our Universe</DisplayName>
+    <DisplayName>Celestial (β)</DisplayName>
     <PublisherDisplayName>Alexandre Madeira</PublisherDisplayName>
     <Logo>Assets\Titles\StoreLogo.png</Logo>
   </Properties>
@@ -33,7 +33,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="Celestial.App">
       <uap:VisualElements
-        DisplayName="Celestial: See Our Universe"
+        DisplayName="Celestial (β)"
         Square150x150Logo="Assets\Titles\Square150x150Logo.png"
         Square44x44Logo="Assets\Titles\Square44x44Logo.png"
         Description="Celestial is your way to explore the cosmos, the app delivers a High Definition image of our universe, alongside with an explanation by a professional." BackgroundColor="transparent">
