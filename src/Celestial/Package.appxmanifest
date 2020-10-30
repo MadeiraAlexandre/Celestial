@@ -10,9 +10,9 @@
   <Identity
     Name="37048AlexandreM.CelestialAPOD"
     Publisher="CN=C27F8FB4-8F79-4471-AD0F-BAABAFEF8801"
-    Version="1.0.56.0" />
+    Version="1.0.57.0" />
 
-  <mp:PhoneIdentity PhoneProductId="01b4e345-a0c9-40fc-8feb-b047a6cf0eec" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="e3965d9e-ec4c-411e-bccf-36f2e392ff9b" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Celestial (β)</DisplayName>
@@ -36,15 +36,16 @@
         DisplayName="Celestial (β)"
         Square150x150Logo="Assets\Titles\Square150x150Logo.png"
         Square44x44Logo="Assets\Titles\Square44x44Logo.png"
-        Description="Celestial is your way to explore the cosmos, the app delivers a High Definition image of our universe, alongside with an explanation by a professional." BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\Titles\Wide310x150Logo.png" ShortName="Celestial" Square310x310Logo="Assets\Titles\LargeTile.png" Square71x71Logo="Assets\Titles\SmallTile.png">
+        Description="Celestial"
+        BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Titles\Wide310x150Logo.png" ShortName="Celestial" Square71x71Logo="Assets\Titles\SmallTile.png" Square310x310Logo="Assets\Titles\LargeTile.png">
           <uap:ShowNameOnTiles>
-            <uap:ShowOn Tile="square310x310Logo"/>
-            <uap:ShowOn Tile="wide310x150Logo"/>
             <uap:ShowOn Tile="square150x150Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square310x310Logo"/>
           </uap:ShowNameOnTiles>
         </uap:DefaultTile >
-        <uap:SplashScreen Image="Assets\Titles\SplashScreen.png" uap5:Optional="true"  />
+        <uap:SplashScreen Image="Assets\Titles\SplashScreen.png" uap5:Optional="true"  BackgroundColor="transparent"/>
       </uap:VisualElements>
     </Application>
   </Applications>

@@ -1,7 +1,7 @@
-﻿using Celestial.Helper;
+﻿using Celestial.Helpers;
 using System;
 
-namespace Celestial.Model
+namespace Celestial.Models
 {
     public class AppSettings : SettingsHelper
     {
@@ -27,16 +27,6 @@ namespace Celestial.Model
             }
         }
 
-        public bool SearchUsingDatePicker
-        {
-            get => ReadSettings(nameof(SearchUsingDatePicker), false);
-            set
-            {
-                SaveSettings(nameof(SearchUsingDatePicker), value);
-                NotifyPropertyChanged();
-            }
-        }
-
         public bool IsFirstDownload
         {
             get => ReadSettings(nameof(IsFirstDownload), true);
@@ -56,6 +46,5 @@ namespace Celestial.Model
                 NotifyPropertyChanged();
             }
         }
-
     }
 }

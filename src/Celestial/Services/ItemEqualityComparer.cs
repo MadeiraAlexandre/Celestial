@@ -1,4 +1,4 @@
-﻿using Celestial.Model;
+﻿using Celestial.Models;
 using System.Collections.Generic;
 
 namespace Celestial.Services

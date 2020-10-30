@@ -1,10 +1,9 @@
 ﻿<Page
-    x:Class="Celestial.Views.WelcomeView"
+    x:Class="Celestial.Views.WelcomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animation="using:Celestial.Animations"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:Celestial.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:winui="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource SystemControlAcrylicWindowBrush}"
@@ -15,7 +14,7 @@
             Width="600"
             Height="700"
             Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-            CornerRadius="8">
+            CornerRadius="12">
             <StackPanel
                 Margin="0,20,0,0"
                 HorizontalAlignment="Center"
@@ -72,6 +71,5 @@
                 Content="Start"
                 Style="{ThemeResource AccentButtonStyle}" />
         </Grid>
-
     </ScrollViewer>
 </Page>

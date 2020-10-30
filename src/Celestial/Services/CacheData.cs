@@ -1,4 +1,4 @@
-﻿using Celestial.Model;
+﻿using Celestial.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,6 @@ namespace Celestial.Services
 {
     public static class CacheData
     {
-
         private static StorageFile _file;
 
         public static async Task WriteCacheAsync(List<Apod> dataList)
@@ -23,6 +22,7 @@ namespace Celestial.Services
                 if (!AppSettings.Instance.IsFirstLoad && dataList != null)
                 {
                     dataList.AddRange(await ReadCacheAsync().ConfigureAwait(false));
+                    dataList.OrderByDescending(o => o.Date);
                 }
                 var apodList = dataList.Distinct(new ItemEqualityComparer());
                 JsonSerializer serializer = new JsonSerializer
@@ -40,7 +40,7 @@ namespace Celestial.Services
             {
                 _ = await new ContentDialog
                 {
-                    Title = "Houston, We Have a Problem",
+                    Title = "Houston, we have a problem",
                     Content = $"{ex.Message}",
                     CloseButtonText = "Close"
                 }.ShowAsync();
@@ -57,6 +57,7 @@ namespace Celestial.Services
                 using (StreamReader reader = new StreamReader(_file.Path))
                 {
                     dataList = JsonConvert.DeserializeObject<List<Apod>>(reader.ReadToEnd());
+                    dataList.OrderByDescending(o => o.Date);
                 }
                 return dataList;
             }
@@ -64,7 +65,7 @@ namespace Celestial.Services
             {
                 _ = await new ContentDialog
                 {
-                    Title = "Houston, We Have a Problem",
+                    Title = "Houston, we have a problem",
                     Content = $"{ex.Message}",
                     CloseButtonText = "Close"
                 }.ShowAsync();

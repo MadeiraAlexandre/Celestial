@@ -1,5 +1,4 @@
-﻿using Celestial.Helper;
-using Celestial.Model;
+﻿using Celestial.Models;
 using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -32,22 +31,20 @@ namespace Celestial
                 {
                     //TODO: Load state from previously suspended application
                 }
-
                 Window.Current.Content = rootFrame;
             }
 
             if (e.PrelaunchActivated == false)
             {
-                CoreApplication.EnablePrelaunch(true);
                 if (rootFrame.Content == null)
                 {
                     if (!AppSettings.Instance.IsFirstLoad)
                     {
-                        rootFrame.Navigate(typeof(Views.GalleryView), e.Arguments);
+                        rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
                     }
                     else
                     {
-                        rootFrame.Navigate(typeof(Views.WelcomeView), e.Arguments);
+                        rootFrame.Navigate(typeof(Views.WelcomePage), e.Arguments);
                     }
                 }
                 Window.Current.Activate();
@@ -57,15 +54,8 @@ namespace Celestial
             }
         }
 
-        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
-        {
-            throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
-        }
+        void OnNavigationFailed(object sender, NavigationFailedEventArgs e) => throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
 
-        private void OnSuspending(object sender, SuspendingEventArgs e)
-        {
-            var deferral = e.SuspendingOperation.GetDeferral();
-            deferral.Complete();
-        }
+        private void OnSuspending(object sender, SuspendingEventArgs e) => e.SuspendingOperation.GetDeferral().Complete();
     }
 }
