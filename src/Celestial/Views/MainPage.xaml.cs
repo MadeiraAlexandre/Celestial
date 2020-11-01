@@ -3,6 +3,7 @@ using Celestial.Models;
 using Celestial.Services;
 using Microsoft.Toolkit.Uwp;
 using System;
+using System.Linq;
 using System.Numerics;
 using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Composition;
@@ -58,9 +59,10 @@ namespace Celestial.Views
             {
                 collection = new IncrementalLoadingCollection<ApodSource, Apod>();
                 GalleryGrid_GridView.ItemsSource = collection;
+                collection.OrderByDescending(o => o.Date);
             }
             CDP.MaxDate = DateTimeOffset.UtcNow;
-            GalleryGrid_GridView_Header.Visibility = Visibility.Visible;
+            GalleryGrid_GridView_Header.Opacity = 1;
         }
 
         private void GalleryGrid_GridView_ItemClick(object sender, ItemClickEventArgs e)
@@ -69,7 +71,6 @@ namespace Celestial.Views
             {
                 _selectedItem = clickedItem.Content as Apod;
                 FindName("ImageGrid");
-                ImageGrid_BackgroundImage.Source = new BitmapImage(_selectedItem.Url);
                 ImageGrid_Image.Source = new BitmapImage(_selectedItem.Url);
                 TitleTextBlock.Text = _selectedItem.Title;
                 if (string.IsNullOrEmpty(_selectedItem.Copyright)) _selectedItem.Copyright = "NASA";
@@ -87,13 +88,13 @@ namespace Celestial.Views
         private void ForwardConnectedAnimation_Completed(ConnectedAnimation sender, object args)
         {
             ImageGrid_InfoPanel.Opacity = 1;
-            ImageGrid_BackgroundImage.Opacity = 1;
+            ImageGrid_BackButton.Opacity = 1;
         }
 
         private async void ImageGrid_BackButton_Click(object sender, RoutedEventArgs e)
         {
-            ImageGrid_BackgroundImage.Opacity = 0;
             ImageGrid_InfoPanel.Opacity = 0;
+            ImageGrid_BackButton.Opacity = 0;
             switch (_isSearch)
             {
                 case true:
@@ -174,12 +175,10 @@ namespace Celestial.Views
         private async void CDP_DateChanged(CalendarDatePicker sender, CalendarDatePickerDateChangedEventArgs args)
         {
             _searchItem = await ApodClient.FetchApodAsync((DateTimeOffset)sender.Date).ConfigureAwait(true);
-            if(_searchItem != null || _searchItem.MediaType != "video")
+            if (_searchItem != null || _searchItem.MediaType != "video")
             {
                 FindName("ImageGrid");
-                ImageGrid_BackgroundImage.Source = new BitmapImage(_searchItem.Url);
                 ImageGrid_Image.Source = new BitmapImage(_searchItem.Url);
-                ImageGrid_BackgroundImage.Opacity = 1;
                 TitleTextBlock.Text = _searchItem.Title;
                 if (string.IsNullOrEmpty(_searchItem.Copyright)) _searchItem.Copyright = "NASA";
                 CopyrightTextBlock.Text = $"by {_searchItem.Copyright}";
@@ -208,5 +207,18 @@ namespace Celestial.Views
         private void SettingsGrid_Loaded(object sender, RoutedEventArgs e) => SettingsGrid_AboutDescriptionText.Text = "This application is only possible thanks to NASA Open APIs.\nCelestial is open source and available on GitHub under the MIT License.";
 
         private void ImageGrid_Image_Loaded(object sender, RoutedEventArgs e) => ImageGrid_Image.Name = $"Image of {_selectedItem.Title}";
+
+        private void ImageViewer_Flyout_ShowPanel_Click(object sender, RoutedEventArgs e)
+        {
+            switch (ImageViewer_Flyout_ShowPanel.IsChecked)
+            {
+                case true:
+                    ImageGrid_InfoPanel.Opacity = 1;
+                    break;
+                case false:
+                    ImageGrid_InfoPanel.Opacity = 0;
+                    break;
+            }
+        }
     }
 }

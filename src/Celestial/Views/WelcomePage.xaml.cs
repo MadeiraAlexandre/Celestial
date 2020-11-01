@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 namespace Celestial.Views
 {
@@ -16,10 +17,10 @@ namespace Celestial.Views
             WelcomeGridCloseButton.IsEnabled = false;
             WelcomeGridCloseButton.Content = "Loading images";
             await Task.Delay(100).ConfigureAwait(true);
-            var dataList = await ApodClient.FetchApodListAsync(DateTimeOffset.Now.AddMonths(-2), DateTimeOffset.UtcNow).ConfigureAwait(true);
+            var dataList = await ApodClient.FetchApodListAsync(DateTimeOffset.Now.AddMonths(-1), DateTimeOffset.UtcNow).ConfigureAwait(true);
             await CacheData.WriteCacheAsync(dataList).ConfigureAwait(true);
             AppSettings.Instance.IsFirstLoad = false;
-            Frame.Navigate(typeof(MainPage));
+            Frame.Navigate(typeof(MainPage), new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
         }
 
         private void AnimatedVisualPlayer_Loaded(object sender, RoutedEventArgs e) => WelcomeGridCloseButton.IsEnabled = true;

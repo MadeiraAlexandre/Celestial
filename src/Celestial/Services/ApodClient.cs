@@ -25,20 +25,22 @@ namespace Celestial.Services
                     _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     var _startDate = $"{startDate.Year.ToString(CultureInfo.InvariantCulture)}-{startDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{startDate.Day.ToString("00", CultureInfo.InvariantCulture)}";
                     var _endDate = $"{endDate.Year.ToString(CultureInfo.InvariantCulture)}-{endDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{endDate.Day.ToString("00", CultureInfo.InvariantCulture)}";
-                    var response = _client.GetAsync($"?api_key={Credential.CredentialKey}&start_date={_startDate}&end_date={_endDate}").Result;
-                    if (response.IsSuccessStatusCode)
+                    using (var response = _client.GetAsync($"?api_key={Credential.CredentialKey}&start_date={_startDate}&end_date={_endDate}").Result)
                     {
-                        var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                        var content = JArray.Parse(responseContent);
-                        var results = JsonConvert.DeserializeObject<List<Apod>>(content.ToString());
-                        results.RemoveAll(x => x.MediaType == "video");
-                        return results;
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            var content = JArray.Parse(responseContent);
+                            var results = JsonConvert.DeserializeObject<List<Apod>>(content.ToString());
+                            results.RemoveAll(x => x.MediaType == "video");
+                            return results;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
-                    else
-                    {
-                        return null;
-                    }
-                   
+
                 }
             }
             catch (Exception)

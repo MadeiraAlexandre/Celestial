@@ -35,7 +35,19 @@
             <MenuFlyoutItem
                 x:Name="ImageViewer_Flyout_SetWallpaper"
                 Click="SetWallpaperUI_Click"
+                Icon="SetLockScreen"
                 Text="Set as wallpaper" />
+            <MenuFlyoutSeparator />
+            <ToggleMenuFlyoutItem
+                x:Name="ImageViewer_Flyout_ShowPanel"
+                Click="ImageViewer_Flyout_ShowPanel_Click"
+                Icon="Important"
+                IsChecked="True"
+                Text="Show Panel">
+                <ToggleMenuFlyoutItem.KeyboardAccelerators>
+                    <KeyboardAccelerator Key="M" Modifiers="Control" />
+                </ToggleMenuFlyoutItem.KeyboardAccelerators>
+            </ToggleMenuFlyoutItem>
         </MenuFlyout>
     </Page.Resources>
 
@@ -51,7 +63,7 @@
                 SelectionMode="None"
                 ShowsScrollingPlaceholders="True">
                 <GridView.Header>
-                    <Grid x:Name="GalleryGrid_GridView_Header" Visibility="Collapsed">
+                    <Grid x:Name="GalleryGrid_GridView_Header" Opacity="0">
                         <TextBlock
                             Padding="0,10,0,20"
                             FontSize="28"
@@ -68,10 +80,11 @@
                             PlaceholderText="search by date" />
                         <DropDownButton
                             HorizontalAlignment="Right"
+                            AutomationProperties.Name="More"
                             Background="Transparent"
                             CornerRadius="6"
                             Style="{ThemeResource ButtonRevealStyle}"
-                            ToolTipService.ToolTip="Settings">
+                            ToolTipService.ToolTip="More">
                             <DropDownButton.Content>
                                 <SymbolIcon Symbol="More" />
                             </DropDownButton.Content>
@@ -102,7 +115,8 @@
                                 ContextFlyout="{StaticResource GalleryGridViewFlyout}"
                                 PointerEntered="Image_PointerEntered"
                                 PointerExited="Image_PointerExited"
-                                Stretch="UniformToFill">
+                                Stretch="UniformToFill"
+                                ToolTipService.ToolTip="{x:Bind Date}">
                                 <Image.Source>
                                     <BitmapImage UriSource="{x:Bind Url}" />
                                 </Image.Source>
@@ -130,23 +144,18 @@
             x:Name="ImageGrid"
             x:Load="False"
             Visibility="Collapsed">
-            <Image
-                x:Name="ImageGrid_BackgroundImage"
-                Grid.RowSpan="2"
-                Opacity="0"
-                Stretch="UniformToFill" />
-            <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Grid Grid.RowSpan="2">
                     <Image
                         x:Name="ImageGrid_Image"
                         VerticalAlignment="Top"
                         ContextFlyout="{StaticResource ImageViewer_Flyout}"
                         Loaded="ImageGrid_Image_Loaded"
-                        Stretch="Uniform" />
+                        Stretch="UniformToFill" />
                     <Button
                         x:Name="ImageGrid_BackButton"
                         Width="42"
@@ -154,8 +163,11 @@
                         Margin="20,32,0,0"
                         VerticalAlignment="Top"
                         AccessKey="B"
+                        AutomationProperties.Name="Back"
+                        Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
                         Click="ImageGrid_BackButton_Click"
                         CornerRadius="8"
+                        Opacity="0"
                         ToolTipService.ToolTip="Back">
                         <Button.Content>
                             <SymbolIcon Symbol="Back" />
@@ -168,23 +180,27 @@
                 <Grid
                     x:Name="ImageGrid_InfoPanel"
                     Grid.Row="1"
-                    Width="900"
-                    Height="280"
+                    Width="800"
+                    Height="250"
+                    Margin="0,0,0,20"
+                    AutomationProperties.AccessibilityView="Content"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                    CornerRadius="16"
                     Opacity="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
                     <StackPanel
+                        x:Name="ImageGrid_InfoPanel_MainPanel"
                         Grid.Column="0"
-                        MaxWidth="400"
-                        Margin="60,10,10,10"
-                        HorizontalAlignment="Left"
+                        Width="300"
+                        Margin="20"
+                        HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         Orientation="Vertical">
                         <TextBlock
                             x:Name="TitleTextBlock"
-                            Margin="20,20,20,10"
                             HorizontalAlignment="Center"
                             FontSize="16"
                             FontWeight="Bold"
@@ -192,7 +208,7 @@
                             TextWrapping="Wrap" />
                         <TextBlock
                             x:Name="CopyrightTextBlock"
-                            Margin="10,0,10,10"
+                            Margin="0,10,0,0"
                             HorizontalAlignment="Center"
                             FontSize="14"
                             FontStretch="Expanded"
@@ -200,11 +216,12 @@
                             IsTextSelectionEnabled="True"
                             TextWrapping="Wrap" />
                         <StackPanel
+                            x:Name="ActionsPanel"
                             Width="124"
                             Height="42"
-                            Margin="10,10,10,10"
-                            Background="{ThemeResource SystemControlAcrylicElementBrush}"
-                            CornerRadius="6"
+                            Margin="0,20,0,0"
+                            Background="Transparent"
+                            CornerRadius="8"
                             Opacity="1"
                             Orientation="Horizontal">
                             <Button
@@ -213,6 +230,7 @@
                                 Height="42"
                                 AccessKey="D"
                                 AutomationProperties.Name="Download image"
+                                Background="Transparent"
                                 Click="DownloadImageUI_Click"
                                 CornerRadius="0"
                                 ToolTipService.ToolTip="Download">
@@ -229,6 +247,7 @@
                                 Height="42"
                                 AccessKey="W"
                                 AutomationProperties.Name="Set as wallpaper"
+                                Background="Transparent"
                                 Click="SetWallpaperUI_Click"
                                 CornerRadius="0"
                                 ToolTipService.ToolTip="Set as wallpaper">
@@ -241,6 +260,7 @@
                                 Height="42"
                                 AccessKey="S"
                                 AutomationProperties.Name="Share image"
+                                Background="Transparent"
                                 Click="ShareUI_Click"
                                 CornerRadius="0"
                                 ToolTipService.ToolTip="Share">
@@ -251,14 +271,14 @@
                         </StackPanel>
                     </StackPanel>
                     <ScrollViewer
+                        x:Name="ImageGrid_InfoPanel_DetailsPanel"
                         Grid.Column="1"
-                        MinWidth="400"
                         MaxWidth="500"
                         HorizontalAlignment="Right"
                         VerticalScrollBarVisibility="Visible">
                         <TextBlock
                             x:Name="ExplanationTextBlock"
-                            Margin="10,20,60,10"
+                            Margin="20"
                             VerticalAlignment="Center"
                             FontSize="14"
                             IsTextSelectionEnabled="True"

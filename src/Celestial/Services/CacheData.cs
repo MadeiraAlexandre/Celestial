@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.UI.Xaml.Controls;
 
 namespace Celestial.Services
 {
@@ -22,7 +21,6 @@ namespace Celestial.Services
                 if (!AppSettings.Instance.IsFirstLoad && dataList != null)
                 {
                     dataList.AddRange(await ReadCacheAsync().ConfigureAwait(false));
-                    dataList.OrderByDescending(o => o.Date);
                 }
                 var apodList = dataList.Distinct(new ItemEqualityComparer());
                 JsonSerializer serializer = new JsonSerializer
@@ -36,14 +34,8 @@ namespace Celestial.Services
                     serializer.Serialize(writer, apodList);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _ = await new ContentDialog
-                {
-                    Title = "Houston, we have a problem",
-                    Content = $"{ex.Message}",
-                    CloseButtonText = "Close"
-                }.ShowAsync();
                 throw;
             }
         }
@@ -57,18 +49,11 @@ namespace Celestial.Services
                 using (StreamReader reader = new StreamReader(_file.Path))
                 {
                     dataList = JsonConvert.DeserializeObject<List<Apod>>(reader.ReadToEnd());
-                    dataList.OrderByDescending(o => o.Date);
                 }
                 return dataList;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                _ = await new ContentDialog
-                {
-                    Title = "Houston, we have a problem",
-                    Content = $"{ex.Message}",
-                    CloseButtonText = "Close"
-                }.ShowAsync();
                 throw;
             }
         }

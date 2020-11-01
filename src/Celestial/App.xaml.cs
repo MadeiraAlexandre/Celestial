@@ -29,13 +29,14 @@ namespace Celestial
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+
                 }
                 Window.Current.Content = rootFrame;
             }
 
             if (e.PrelaunchActivated == false)
             {
+                CoreApplication.EnablePrelaunch(true);
                 if (rootFrame.Content == null)
                 {
                     if (!AppSettings.Instance.IsFirstLoad)
