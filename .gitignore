@@ -6,3 +6,7 @@ src/Celestial/Celestial.csproj.user
 src/Celestial/Services/Credential.cs
 /src/Celestial/BundleArtifacts
 /src/Celestial/AppPackages/
+/src/.vs/Celestial/DesignTimeBuild
+/src/Celestial.Shared/bin
+/src/Celestial.Shared/obj
+/src/Celestial/Celestial.GeneratedMSBuildEditorConfig.editorconfig

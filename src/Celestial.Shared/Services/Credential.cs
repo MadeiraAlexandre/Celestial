@@ -1,4 +1,4 @@
-﻿namespace Celestial.Services
+﻿namespace Celestial.Shared.Services
 {
     internal static class Credential
     {

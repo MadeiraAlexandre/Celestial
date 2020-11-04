@@ -1,5 +1,4 @@
-﻿using Celestial.Models;
-using System;
+﻿using System;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Core;
@@ -11,7 +10,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Celestial
 {
-    sealed partial class App : Application
+    public sealed partial class App : Application
     {
         public App()
         {
@@ -24,30 +23,14 @@ namespace Celestial
             if (!(Window.Current.Content is Frame rootFrame))
             {
                 rootFrame = new Frame();
-
                 rootFrame.NavigationFailed += OnNavigationFailed;
-
-                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
-                {
-
-                }
+                if (e.PreviousExecutionState == ApplicationExecutionState.Terminated) return;
                 Window.Current.Content = rootFrame;
             }
 
             if (e.PrelaunchActivated == false)
             {
-                CoreApplication.EnablePrelaunch(true);
-                if (rootFrame.Content == null)
-                {
-                    if (!AppSettings.Instance.IsFirstLoad)
-                    {
-                        rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
-                    }
-                    else
-                    {
-                        rootFrame.Navigate(typeof(Views.WelcomePage), e.Arguments);
-                    }
-                }
+                if (rootFrame.Content == null) rootFrame.Navigate(typeof(Views.MainPage), e.Arguments);
                 Window.Current.Activate();
                 CoreApplication.GetCurrentView().TitleBar.ExtendViewIntoTitleBar = true;
                 ApplicationView.GetForCurrentView().TitleBar.ButtonBackgroundColor = Colors.Transparent;
@@ -55,7 +38,7 @@ namespace Celestial
             }
         }
 
-        void OnNavigationFailed(object sender, NavigationFailedEventArgs e) => throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
+        private void OnNavigationFailed(object sender, NavigationFailedEventArgs e) => throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
 
         private void OnSuspending(object sender, SuspendingEventArgs e) => e.SuspendingOperation.GetDeferral().Complete();
     }

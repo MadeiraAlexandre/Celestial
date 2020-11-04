@@ -2,7 +2,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Celestial.Models
+namespace Celestial.Shared.Models
 {
     public class Apod
     {
@@ -30,8 +30,10 @@ namespace Celestial.Models
         [JsonProperty(PropertyName = "hdurl")]
         public Uri HdUrl { get; set; }
 
-        [DataMember]
         [JsonProperty(PropertyName = "date")]
-        public string Date { get; set; }
+        private string DateString { get; set; }
+
+        [DataMember]
+        public DateTime Date => DateTime.Parse(DateString, new System.Globalization.CultureInfo("en-US"));
     }
 }

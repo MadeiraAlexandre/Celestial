@@ -2,103 +2,47 @@
     x:Class="Celestial.Views.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model="using:Celestial.Models"
+    xmlns:model="using:Celestial.Shared.Models"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-
-    <Page.Resources>
-        <CommandBarFlyout x:Key="GalleryGridViewFlyout">
-            <AppBarButton
-                x:Name="GalleryGridViewFlyout_Download"
-                Click="GalleryGridViewFlyout_Download_Click"
-                Content="Download"
-                Icon="Download"
-                ToolTipService.ToolTip="Download" />
-        </CommandBarFlyout>
-        <MenuFlyout x:Key="ImageViewer_Flyout">
-            <MenuFlyoutItem
-                x:Name="ImageViewer_Flyout_Download"
-                Click="DownloadImageUI_Click"
-                Icon="Download"
-                Text="Download">
-                <MenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="S" Modifiers="Control" />
-                </MenuFlyoutItem.KeyboardAccelerators>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem
-                Click="ShareUI_Click"
-                Icon="Share"
-                Text="Share" />
-            <MenuFlyoutSeparator />
-            <MenuFlyoutItem
-                x:Name="ImageViewer_Flyout_SetWallpaper"
-                Click="SetWallpaperUI_Click"
-                Icon="SetLockScreen"
-                Text="Set as wallpaper" />
-            <MenuFlyoutSeparator />
-            <ToggleMenuFlyoutItem
-                x:Name="ImageViewer_Flyout_ShowPanel"
-                Click="ImageViewer_Flyout_ShowPanel_Click"
-                Icon="Important"
-                IsChecked="True"
-                Text="Show Panel">
-                <ToggleMenuFlyoutItem.KeyboardAccelerators>
-                    <KeyboardAccelerator Key="M" Modifiers="Control" />
-                </ToggleMenuFlyoutItem.KeyboardAccelerators>
-            </ToggleMenuFlyoutItem>
-        </MenuFlyout>
-    </Page.Resources>
 
     <Grid>
         <Grid x:Name="GalleryGrid">
             <GridView
                 x:Name="GalleryGrid_GridView"
-                Padding="5,20,5,20"
+                Padding="10,20,10,10"
                 HorizontalAlignment="Center"
+                animations:ReorderGridAnimation.Duration="300"
+                IncrementalLoadingTrigger="Edge"
                 IsItemClickEnabled="True"
                 ItemClick="GalleryGrid_GridView_ItemClick"
-                Loaded="GalleryGrid_GridView_Loaded"
-                SelectionMode="None"
-                ShowsScrollingPlaceholders="True">
+                ItemsSource="{x:Bind collection, Mode=OneWay}"
+                SelectionMode="None">
                 <GridView.Header>
-                    <Grid x:Name="GalleryGrid_GridView_Header" Opacity="0">
-                        <TextBlock
-                            Padding="0,10,0,20"
-                            FontSize="28"
-                            FontStretch="Expanded"
-                            FontWeight="SemiBold"
-                            Text="Explore" />
-                        <CalendarDatePicker
-                            x:Name="CDP"
-                            Width="200"
-                            Margin="0,10,0,20"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            DateChanged="CDP_DateChanged"
-                            PlaceholderText="search by date" />
-                        <DropDownButton
-                            HorizontalAlignment="Right"
-                            AutomationProperties.Name="More"
-                            Background="Transparent"
-                            CornerRadius="6"
-                            Style="{ThemeResource ButtonRevealStyle}"
-                            ToolTipService.ToolTip="More">
-                            <DropDownButton.Content>
-                                <SymbolIcon Symbol="More" />
-                            </DropDownButton.Content>
-                            <DropDownButton.Flyout>
-                                <MenuFlyout Placement="Bottom">
-                                    <MenuFlyoutItem Click="GalleryGrid_AboutButton_Click" Text="About">
-                                        <MenuFlyoutItem.KeyboardAccelerators>
-                                            <KeyboardAccelerator Key="I" Modifiers="Control" />
-                                        </MenuFlyoutItem.KeyboardAccelerators>
-                                    </MenuFlyoutItem>
-                                </MenuFlyout>
-                            </DropDownButton.Flyout>
-                        </DropDownButton>
-                    </Grid>
+                    <controls:ScrollHeader Mode="QuickReturn">
+                        <Grid>
+                            <TextBlock
+                                Padding="10,10,0,20"
+                                FontSize="28"
+                                FontStretch="Expanded"
+                                FontWeight="SemiBold"
+                                Text="Explore" />
+                            <CalendarDatePicker
+                                x:Name="CDP"
+                                Width="200"
+                                Margin="0,10,20,20"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Background="{ThemeResource SystemControlAcrylicElementBrush}"
+                                DateChanged="CDP_DateChanged"
+                                MaxDate="{x:Bind MaxDateAllowed, Mode=OneWay}"
+                                PlaceholderText="search by date" />
+                        </Grid>
+                    </controls:ScrollHeader>
                 </GridView.Header>
                 <GridView.ItemTemplate>
                     <DataTemplate x:DataType="model:Apod">
@@ -112,11 +56,20 @@
                             DataContext="{x:Bind}">
                             <Image
                                 x:Name="GalleryGridView_GridView_Image"
-                                ContextFlyout="{StaticResource GalleryGridViewFlyout}"
                                 PointerEntered="Image_PointerEntered"
                                 PointerExited="Image_PointerExited"
                                 Stretch="UniformToFill"
                                 ToolTipService.ToolTip="{x:Bind Date}">
+                                <Image.ContextFlyout>
+                                    <CommandBarFlyout>
+                                        <AppBarButton
+                                            x:Name="GalleryGridViewFlyout_Download"
+                                            Click="GalleryGridViewFlyout_Download_Click"
+                                            Content="Download"
+                                            Icon="Download"
+                                            ToolTipService.ToolTip="Download" />
+                                    </CommandBarFlyout>
+                                </Image.ContextFlyout>
                                 <Image.Source>
                                     <BitmapImage UriSource="{x:Bind Url}" />
                                 </Image.Source>
@@ -140,22 +93,58 @@
             </GridView>
         </Grid>
 
-        <Grid
-            x:Name="ImageGrid"
-            x:Load="False"
-            Visibility="Collapsed">
+        <Grid x:Name="ImageGrid" x:Load="False">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid Grid.RowSpan="2">
+                <Grid Background="{ThemeResource SystemControlAcrylicElementBrush}">
+                    <ProgressRing
+                        Width="50"
+                        Height="50"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        IsActive="True" />
                     <Image
                         x:Name="ImageGrid_Image"
                         VerticalAlignment="Top"
-                        ContextFlyout="{StaticResource ImageViewer_Flyout}"
                         Loaded="ImageGrid_Image_Loaded"
-                        Stretch="UniformToFill" />
+                        Stretch="UniformToFill">
+                        <Image.ContextFlyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem
+                                    x:Name="ImageViewer_Flyout_Download"
+                                    Click="DownloadImageUI_Click"
+                                    Icon="Download"
+                                    Text="Download">
+                                    <MenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="S" Modifiers="Control" />
+                                    </MenuFlyoutItem.KeyboardAccelerators>
+                                </MenuFlyoutItem>
+                                <MenuFlyoutItem
+                                    Click="ShareUI_Click"
+                                    Icon="Share"
+                                    Text="Share" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem
+                                    x:Name="ImageViewer_Flyout_SetWallpaper"
+                                    Click="SetWallpaperUI_Click"
+                                    Icon="SetLockScreen"
+                                    Text="Set as wallpaper" />
+                                <MenuFlyoutSeparator />
+                                <ToggleMenuFlyoutItem
+                                    x:Name="ImageViewer_Flyout_ShowPanel"
+                                    Click="ImageViewer_Flyout_ShowPanel_Click"
+                                    Icon="Important"
+                                    IsChecked="True"
+                                    Text="Show Panel">
+                                    <ToggleMenuFlyoutItem.KeyboardAccelerators>
+                                        <KeyboardAccelerator Key="M" Modifiers="Control" />
+                                    </ToggleMenuFlyoutItem.KeyboardAccelerators>
+                                </ToggleMenuFlyoutItem>
+                            </MenuFlyout>
+                        </Image.ContextFlyout>
+                        <Image.Source>
+                            <BitmapImage UriSource="{x:Bind SelectedItem.Url, Mode=OneWay}" />
+                        </Image.Source>
+                    </Image>
                     <Button
                         x:Name="ImageGrid_BackButton"
                         Width="42"
@@ -179,10 +168,10 @@
                 </Grid>
                 <Grid
                     x:Name="ImageGrid_InfoPanel"
-                    Grid.Row="1"
                     Width="800"
                     Height="250"
                     Margin="0,0,0,20"
+                    VerticalAlignment="Bottom"
                     AutomationProperties.AccessibilityView="Content"
                     Background="{ThemeResource SystemControlAcrylicElementBrush}"
                     CornerRadius="16"
@@ -205,6 +194,7 @@
                             FontSize="16"
                             FontWeight="Bold"
                             IsTextSelectionEnabled="True"
+                            Text="{x:Bind SelectedItem.Title, Mode=OneWay}"
                             TextWrapping="Wrap" />
                         <TextBlock
                             x:Name="CopyrightTextBlock"
@@ -214,6 +204,7 @@
                             FontStretch="Expanded"
                             FontWeight="SemiLight"
                             IsTextSelectionEnabled="True"
+                            Text="{x:Bind SelectedItem.Copyright, Mode=OneWay}"
                             TextWrapping="Wrap" />
                         <StackPanel
                             x:Name="ActionsPanel"
@@ -282,55 +273,63 @@
                             VerticalAlignment="Center"
                             FontSize="14"
                             IsTextSelectionEnabled="True"
+                            Text="{x:Bind SelectedItem.Explanation, Mode=OneWay}"
                             TextWrapping="Wrap" />
                     </ScrollViewer>
                 </Grid>
+                <controls:InAppNotification
+                    x:Name="ImageGrid_Notification"
+                    Width="600"
+                    Margin="0,20,0,0"
+                    VerticalAlignment="Top"
+                    BorderThickness="0"
+                    CornerRadius="12"
+                    ShowDismissButton="True" />
             </Grid>
         </Grid>
 
         <Grid
-            x:Name="SettingsGrid"
+            x:Name="WelcomeGrid"
             x:Load="False"
             Background="{ThemeResource SystemControlAcrylicElementBrush}"
-            Loaded="SettingsGrid_Loaded"
-            Visibility="Collapsed">
-            <Grid
-                Width="400"
-                Height="180"
-                Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                CornerRadius="8">
-                <Button
-                    Margin="20,10,10,20"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Top"
-                    AccessKey="C"
-                    AutomationProperties.Name="Close"
-                    Background="Transparent"
-                    Click="SettingsGrid_BackButton_Click"
-                    CornerRadius="2"
-                    Style="{ThemeResource ButtonRevealStyle}"
-                    ToolTipService.ToolTip="Close">
-                    <Button.Content>
-                        <SymbolIcon Symbol="Cancel" />
-                    </Button.Content>
-                    <Button.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="Escape" />
-                    </Button.KeyboardAccelerators>
-                </Button>
-                <StackPanel Margin="20" Orientation="Vertical">
-                    <TextBlock
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
-                        FontSize="22"
-                        FontWeight="Bold"
-                        Text="About" />
-                    <TextBlock
-                        x:Name="SettingsGrid_AboutDescriptionText"
-                        Margin="0,10,10,20"
-                        IsTextSelectionEnabled="True"
-                        TextWrapping="Wrap" />
-                </StackPanel>
-            </Grid>
+            Loaded="WelcomeGrid_Loaded">
+            <ScrollViewer>
+                <Grid
+                    Width="500"
+                    Height="400"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    CornerRadius="12">
+                    <StackPanel
+                        Margin="0,20,0,120"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Orientation="Vertical">
+                        <TextBlock
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Top"
+                            FontSize="24"
+                            FontWeight="Bold"
+                            Text="Welcome to Celestial" />
+                        <TextBlock
+                            x:Name="WelcomePage_Description"
+                            Width="400"
+                            Margin="0,40,0,0"
+                            IsTextSelectionEnabled="True"
+                            TextWrapping="Wrap" />
+                    </StackPanel>
+                    <Button
+                        x:Name="WelcomeGridCloseButton"
+                        Width="250"
+                        Height="40"
+                        Margin="0,0,0,60"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Bottom"
+                        Click="WelcomeGridCloseButton_Click"
+                        Content="Start"
+                        Style="{ThemeResource AccentButtonStyle}" />
+                </Grid>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>
