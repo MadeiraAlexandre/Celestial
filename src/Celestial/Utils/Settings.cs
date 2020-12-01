@@ -1,4 +1,4 @@
-﻿namespace Celestial.Models
+﻿namespace Celestial.Utils
 {
     public class Settings
     {

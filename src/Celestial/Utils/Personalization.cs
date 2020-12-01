@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Windows.Storage;
 
-namespace Celestial.Services
+namespace Celestial.Utils
 {
     public static class Personalization
     {

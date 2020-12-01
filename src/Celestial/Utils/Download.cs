@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
 
-namespace Celestial.Services
+namespace Celestial.Utils
 {
     public static class Download
     {
@@ -14,12 +14,7 @@ namespace Celestial.Services
         {
             try { DownloadFile = await DownloadsFolder.CreateFileAsync($"{fileName}.jpg", CreationCollisionOption.GenerateUniqueName); }
             catch (FileNotFoundException) { DownloadFile = await DownloadsFolder.CreateFileAsync($"Image.jpg", CreationCollisionOption.GenerateUniqueName); }
-            finally
-            {
-                var downloadOperation = new BackgroundDownloader().CreateDownload(downloadUrl, DownloadFile);
-                await downloadOperation.StartAsync();
-                downloadOperation.Priority = BackgroundTransferPriority.High;
-            }
+            finally { await new BackgroundDownloader().CreateDownload(downloadUrl, DownloadFile).StartAsync(); }
         }
     }
 }

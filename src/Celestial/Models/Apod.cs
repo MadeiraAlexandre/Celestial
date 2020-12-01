@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
+using Windows.UI.Xaml.Media.Imaging;
 
-namespace Celestial.Shared.Models
+namespace Celestial.Models
 {
     public class Apod
     {
@@ -18,7 +19,9 @@ namespace Celestial.Shared.Models
         public string MediaType { get; set; }
 
         [JsonProperty(PropertyName = "url")]
-        public Uri Url { get; set; }
+        private Uri Url { get; set; }
+
+        public BitmapImage Image => new BitmapImage(Url);
 
         [JsonProperty(PropertyName = "hdurl")]
         public Uri HdUrl { get; set; }
