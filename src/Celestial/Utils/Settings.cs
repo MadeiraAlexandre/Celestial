@@ -14,8 +14,14 @@
 
         public bool ShowWelcomeGrid { get => ReadSettings(nameof(ShowWelcomeGrid), true); set => SaveSettings(nameof(ShowWelcomeGrid), value); }
 
-        public bool ShowDownloadNotification { get => ReadSettings(nameof(ShowDownloadNotification), true); set => SaveSettings(nameof(ShowDownloadNotification), value); }
+        public bool ShowDownloadInfo { get => ReadSettings(nameof(ShowDownloadInfo), true); set => SaveSettings(nameof(ShowDownloadInfo), value); }
 
-        public bool ShowWallpaperNotification { get => ReadSettings(nameof(ShowWallpaperNotification), true); set => SaveSettings(nameof(ShowWallpaperNotification), value); }
+        public bool ShowWallpaperInfo { get => ReadSettings(nameof(ShowWallpaperInfo), true); set => SaveSettings(nameof(ShowWallpaperInfo), value); }
+
+        public bool SwitchToCompactPanel { get => ReadSettings(nameof(SwitchToCompactPanel), false); set => SaveSettings(nameof(SwitchToCompactPanel), value); }
+
+        public bool IsOriginalAspectRatio { get => ReadSettings(nameof(IsOriginalAspectRatio), false); set => SaveSettings(nameof(IsOriginalAspectRatio), value); }
+
+
     }
 }

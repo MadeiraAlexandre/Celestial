@@ -10,9 +10,9 @@
   <Identity
     Name="37048AlexandreM.CelestialAPOD"
     Publisher="CN=C27F8FB4-8F79-4471-AD0F-BAABAFEF8801"
-    Version="1.0.70.0" />
+    Version="1.0.76.0" />
 
-  <mp:PhoneIdentity PhoneProductId="e23e8aa1-38d9-4f91-ab34-9ed301e6c62d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="e7d9fa47-05ef-495f-b808-11efadf4bcb4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>Celestial (β)</DisplayName>
@@ -52,5 +52,6 @@
 
   <Capabilities>
     <Capability Name="internetClient" />
+    <uap:Capability Name="picturesLibrary"/>
   </Capabilities>
 </Package>

@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+    xmlns:app="using:Windows.ApplicationModel"
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,55 +14,97 @@
     <Grid>
         <GridView
             x:Name="Apod_GridView"
+            Padding="0,90,0,0"
             HorizontalAlignment="Center"
-            animations:ReorderGridAnimation.Duration="300"
+            animations:ReorderGridAnimation.Duration="400"
             IncrementalLoadingTrigger="Edge"
             IsItemClickEnabled="True"
+            IsRightTapEnabled="False"
             ItemClick="Apod_GridView_ItemClick"
             ItemsSource="{x:Bind collection, Mode=OneWay}"
             SelectionMode="None">
-            <GridView.Header>
-                <TextBlock
-                    Margin="0,32,0,10"
-                    FontSize="28"
-                    FontWeight="SemiBold"
-                    Text="Explore" />
-            </GridView.Header>
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType="model:Apod">
-                    <Grid
-                        Width="320"
-                        Height="380"
-                        Margin="4"
-                        AutomationProperties.Name="{x:Bind Title}"
-                        BorderThickness="0"
-                        CornerRadius="8"
-                        DataContext="{x:Bind}">
-                        <controls:ImageEx
-                            EnableLazyLoading="True"
-                            IsCacheEnabled="True"
-                            PointerEntered="Image_PointerEntered"
-                            PointerExited="Image_PointerExited"
-                            Source="{x:Bind Image}"
-                            Stretch="UniformToFill" />
+                    <GridViewItem Style="{ThemeResource GridViewItemExpanded}">
+                        <GridViewItem.Resources>
+                            <SolidColorBrush x:Key="SystemControlHighlightListLowBrush" Color="Transparent" />
+                            <SolidColorBrush x:Key="SystemControlHighlightListMediumBrush" Color="Transparent" />
+                        </GridViewItem.Resources>
                         <Grid
                             Width="320"
-                            Height="60"
-                            VerticalAlignment="Bottom"
-                            Background="{ThemeResource SystemControlAcrylicElementBrush}">
-                            <TextBlock
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                FontWeight="SemiLight"
-                                Text="{x:Bind Title}"
-                                TextWrapping="Wrap"
-                                ToolTipService.ToolTip="{x:Bind Title}" />
+                            Height="380"
+                            Margin="4"
+                            AutomationProperties.Name="{x:Bind Title}"
+                            BorderThickness="0"
+                            CornerRadius="4"
+                            DataContext="{x:Bind}">
+                            <controls:ImageEx
+                                EnableLazyLoading="True"
+                                IsCacheEnabled="True"
+                                PointerEntered="Image_PointerEntered"
+                                PointerExited="Image_PointerExited"
+                                Source="{x:Bind Image}"
+                                Stretch="UniformToFill" />
+                            <Grid
+                                Width="320"
+                                Height="60"
+                                VerticalAlignment="Bottom">
+                                <Grid.Background>
+                                    <AcrylicBrush TintColor="{ThemeResource SystemChromeMediumLowColor}" TintOpacity="0.4" />
+                                </Grid.Background>
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="SemiLight"
+                                    Text="{x:Bind Title}"
+                                    TextWrapping="Wrap"
+                                    ToolTipService.ToolTip="{x:Bind Title}" />
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </GridViewItem>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+
+        <Grid Height="82" VerticalAlignment="Top">
+            <Grid.Background>
+                <AcrylicBrush TintColor="{ThemeResource SystemChromeMediumLowColor}" TintOpacity="0.4" />
+            </Grid.Background>
+            <TextBlock
+                Margin="26,12,0,0"
+                VerticalAlignment="Center"
+                FontSize="32"
+                FontWeight="SemiLight"
+                Text="Explore" />
+            <StackPanel
+                Margin="0,20,20,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
+                <Button Background="Transparent">
+                    <Button.Content>
+                        <SymbolIcon Symbol="More" />
+                    </Button.Content>
+                    <Button.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <ToggleMenuFlyoutItem
+                                x:Name="AspectRatioToggle"
+                                Click="OriginalAspectRatioToggle_Click"
+                                Icon="Trim"
+                                IsChecked="False"
+                                Text="Original Aspect Ratio" />
+                        </MenuFlyout>
+                    </Button.Flyout>
+                </Button>
+            </StackPanel>
+            <TextBlock
+                Margin="12,6,0,0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                Style="{ThemeResource CaptionTextBlockStyle}"
+                Text="{x:Bind app:Package.Current.DisplayName, Mode=OneTime}" />
+        </Grid>
 
         <Grid
             x:Name="WelcomeGrid"
@@ -72,7 +115,7 @@
                 Width="460"
                 Height="320"
                 Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-                CornerRadius="12">
+                CornerRadius="6">
                 <TextBlock
                     Margin="0,40,0,0"
                     HorizontalAlignment="Center"
@@ -85,11 +128,10 @@
                     Width="400"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    IsTextSelectionEnabled="True"
                     TextWrapping="Wrap" />
                 <Button
                     x:Name="WelcomeGridCloseButton"
-                    Width="150"
+                    Width="120"
                     Height="40"
                     Margin="0,40,0,40"
                     HorizontalAlignment="Center"

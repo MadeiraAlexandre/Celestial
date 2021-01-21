@@ -52,9 +52,9 @@ namespace Celestial.Views
 
         private void Apod_GridView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            if (Apod_GridView.ContainerFromItem(e.ClickedItem) is GridViewItem clickedItem)
+            SelectedItem = (Apod)e.ClickedItem;
+            if (SelectedItem != null)
             {
-                SelectedItem = clickedItem.Content as Apod;
                 Frame.Navigate(typeof(ContentPage), SelectedItem, new SlideNavigationTransitionInfo() { Effect = SlideNavigationTransitionEffect.FromRight });
                 Apod_GridView.ScrollIntoView(SelectedItem, ScrollIntoViewAlignment.Default);
             }
@@ -64,6 +64,19 @@ namespace Celestial.Views
         {
             Settings.Instance.ShowWelcomeGrid = false;
             UnloadObject(WelcomeGrid);
+        }
+
+        private void OriginalAspectRatioToggle_Click(object sender, RoutedEventArgs e)
+        {
+            switch (AspectRatioToggle.IsChecked)
+            {
+                case true:
+                    Settings.Instance.IsOriginalAspectRatio = true;
+                    break;
+                case false:
+                    Settings.Instance.IsOriginalAspectRatio = false;
+                    break;
+            }
         }
     }
 }

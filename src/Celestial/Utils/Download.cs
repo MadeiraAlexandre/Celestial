@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Networking.BackgroundTransfer;
 using Windows.Storage;
+using Windows.System;
+using Windows.UI.Popups;
 
 namespace Celestial.Utils
 {
@@ -12,8 +14,17 @@ namespace Celestial.Utils
 
         public static async Task DownloadImageAsync(Uri downloadUrl, string fileName)
         {
-            try { DownloadFile = await DownloadsFolder.CreateFileAsync($"{fileName}.jpg", CreationCollisionOption.GenerateUniqueName); }
+            try
+            {
+                var downloadFolder = await KnownFolders.PicturesLibrary.CreateFolderAsync("Celestial", CreationCollisionOption.OpenIfExists);
+                DownloadFile = await downloadFolder.CreateFileAsync($"{fileName}.jpg", CreationCollisionOption.GenerateUniqueName);
+            }
             catch (FileNotFoundException) { DownloadFile = await DownloadsFolder.CreateFileAsync($"Image.jpg", CreationCollisionOption.GenerateUniqueName); }
+            catch (UnauthorizedAccessException)
+            {
+                _ = await new MessageDialog("The app needs to acess picture library to store downloaded images.", "Permission nedded").ShowAsync();
+                await Launcher.LaunchUriAsync(new Uri("ms-settings:appsfeatures-app"));
+            }
             finally { await new BackgroundDownloader().CreateDownload(downloadUrl, DownloadFile).StartAsync(); }
         }
     }

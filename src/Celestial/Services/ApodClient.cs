@@ -10,17 +10,26 @@ using System.Threading.Tasks;
 
 namespace Celestial.Services
 {
-    public static class ApodClient
+    public class ApodClient
     {
         //TODO: Use your own key or stay with the demo one.
         private const string api_key = "DEMO_KEY";
 
-        public static async Task<List<Apod>> FetchApodListAsync(DateTimeOffset startDate, DateTimeOffset endDate)
+        private HttpClient client;
+
+        private bool? isClientRuning;
+
+        private void SetUpClient()
         {
-            using var _client = new HttpClient { BaseAddress = new Uri("https://api.nasa.gov/planetary/apod") };
-            _client.DefaultRequestHeaders.Accept.Clear();
-            _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            using var response = _client.GetAsync($"?api_key={api_key}&start_date={$"{startDate.Year.ToString(CultureInfo.InvariantCulture)}-{startDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{startDate.Day.ToString("00", CultureInfo.InvariantCulture)}"}&end_date={$"{endDate.Year.ToString(CultureInfo.InvariantCulture)}-{endDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{endDate.Day.ToString("00", CultureInfo.InvariantCulture)}"}").Result;
+            client = new HttpClient { BaseAddress = new Uri("https://api.nasa.gov/planetary/apod") };
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            isClientRuning = true;
+        }
+
+        public async Task<List<Apod>> FetchApodListAsync(DateTimeOffset startDate, DateTimeOffset endDate)
+        {
+            if (isClientRuning != true) SetUpClient();
+            using var response = client.GetAsync($"?api_key={api_key}&start_date={$"{startDate.Year.ToString(CultureInfo.InvariantCulture)}-{startDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{startDate.Day.ToString("00", CultureInfo.InvariantCulture)}"}&end_date={$"{endDate.Year.ToString(CultureInfo.InvariantCulture)}-{endDate.Month.ToString("00", CultureInfo.InvariantCulture)}-{endDate.Day.ToString("00", CultureInfo.InvariantCulture)}"}").Result;
             if (response.IsSuccessStatusCode)
             {
                 var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
