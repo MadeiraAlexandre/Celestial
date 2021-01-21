@@ -1,7 +1,7 @@
 # Introduction
 Celestial is an Apod Client for Windows, the app uses [NASA Open APIs](https://api.nasa.gov/).
 
-![](https://raw.githubusercontent.com/MadeiraAlexandre/Celestial/master/screenshot/Device.png)
+![](https://raw.githubusercontent.com/MadeiraAlexandre/Celestial/master/screenshot/App.png)
 
 ## Installation:
 [Microsoft Store](https://www.microsoft.com/store/apps/9NSSN961H02M)
